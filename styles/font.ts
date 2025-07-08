@@ -14,7 +14,7 @@ const font = {
   H3: fontGenerator(600, 1.5, 140),
   H4: fontGenerator(600, 1.25, 140),
   H5: fontGenerator(600, 1.125, 140),
-  H6: fontGenerator(600, 1, 140),
+  H6: fontGenerator(600, 0.9, 140),
 
   p1: fontGenerator(400, 1.125, 140),
   p2: fontGenerator(400, 1, 160),

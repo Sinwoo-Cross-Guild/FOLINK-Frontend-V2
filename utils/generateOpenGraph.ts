@@ -5,8 +5,8 @@ const generateOpenGraph = <OG extends { title: string; description: string }>({
   metadataBase: new URL("https://folink-me.kro.kr"),
   title: `FOLINK - ${title}`,
   description,
-  icons: { icon: "/favicon.svg" },
-  additionalLinkTags: [{ rel: "icon", href: "/favicon.svg" }],
+  icons: { icon: "/folink.svg" },
+  additionalLinkTags: [{ rel: "icon", href: "/folink.svg" }],
   openGraph: {
     type: "website",
     title: `FOLINK - ${title}`,
