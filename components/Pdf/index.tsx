@@ -14,7 +14,7 @@ const Pdf = () => {
       if (file.type === "application/pdf") {
         try {
           await upload(file);
-          alert("PDF uploaded successfully!");
+
         } catch (error) {
           console.error("Upload failed:", error);
           alert("Failed to upload PDF. Please try again.");
