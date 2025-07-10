@@ -28,7 +28,7 @@ export const Loading = ({ status, type, progress = 0 }: LoadingProps) => {
       fadeOutTimer = setTimeout(() => setFadeOut(true), 500);
     }
 
-    if (type === 'list') {
+    if (type === 'extract') {
       setTextFadeIn(false);
       textFadeTimer = setTimeout(() => setTextFadeIn(true), 10);
     }
@@ -42,38 +42,38 @@ export const Loading = ({ status, type, progress = 0 }: LoadingProps) => {
   const renderContent = () => {
     switch (type) {
       case 'extract':
-        const loadingText = progress <= 99 ? "면접 질문을 생성 중입니다.." : "면접 질문을 검토 중입니다!"
-          return (
-            <div className={styles.loading.container}>
-              <span
-                className={`${styles.loading.progressText} ${
-                  textFadeIn ? styles.loading.textFadeIn : ""
-                }`}
-                role="status"
-                aria-live="polite"
-              >
-                {loadingText}
-              </span>
+        const loadingText = progress <= 50 ? "면접 질문을 생성 중입니다.." : "면접 질문을 검토 중입니다!";
+        return (
+          <div className={styles.loading.container}>
+            <span
+              className={`${styles.loading.progressText} ${
+                textFadeIn ? styles.loading.textFadeIn : ""
+              }`}
+              role="status"
+              aria-live="polite"
+            >
+              {loadingText}
+            </span>
+            <div
+              className={styles.loading.progressBox}
+              role="progressbar"
+              aria-valuenow={validProgress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
               <div
-                className={styles.loading.progressBox}
-                role="progressbar"
-                aria-valuenow={validProgress}
-                aria-valuemin={0}
-                aria-valuemax={100}
-              >
-                <div
-                  className={styles.loading.progressBar}
-                  style={{ width: `${validProgress}%` }}
-                />
-              </div>
+                className={styles.loading.progressBar}
+                style={{ width: `${validProgress}%` }}
+              />
             </div>
-          );
-        case "list":
-          return <div className={styles.loading.spinner} role="status" aria-label="로딩 중" />;
-        case "feedback":
-          return <Image width={120} height={120} src={FeedbackImg} alt="피드백 이미지" />;
-        default:
-          return null
+          </div>
+        );
+      case "list":
+        return <div className={styles.loading.spinner} role="status" aria-label="로딩 중" />;
+      case "feedback":
+        return <Image width={120} height={120} src={FeedbackImg} alt="피드백 이미지" />;
+      default:
+        return null
     }
   }
 
