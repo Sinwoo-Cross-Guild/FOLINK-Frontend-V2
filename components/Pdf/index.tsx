@@ -1,23 +1,19 @@
 "use client"
 
 import { usePdfUploadMutation } from "@/services/pdf/pdf.mutation";
-import { useDragAndDrop } from "@/hooks";
+import useDragAndDrop from "./useDragAndDrop";
 import * as styles from "./style.css";
 import Image from "next/image";
 import { Loading } from "../Loading";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ERROR } from "@/constants";
 
 const Pdf = () => {
   const [progress, setProgress] = useState(0);
+  const router = useRouter();
   
-  const { mutateAsync: upload, isPending: isUploading } = usePdfUploadMutation(
-    (progressEvent) => {
-      const percentCompleted = Math.round(
-        (progressEvent.loaded * 100) / progressEvent.total
-      );
-      setProgress(percentCompleted);
-    }
-  );
+  const { mutateAsync: upload, isPending: isUploading } = usePdfUploadMutation();
 
   const handleFilesSelected = async (files: File[]) => {
     if (files.length > 0) {
@@ -37,14 +33,38 @@ const Pdf = () => {
         return;
       }
 
-      try {
-        setProgress(0);
-        await upload(file); 
-        setProgress(100);
-      } catch (error) {
-        alert("업로드 중 오류가 발생했습니다.");
-        setProgress(0); 
-      }
+      setProgress(0);
+      
+      await upload(
+        {
+          file,
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setProgress(percentCompleted);
+          },
+        },
+        {
+          onSuccess: (response) => {
+            setProgress(100);
+            
+            const questionSetId = response?.data?.questionSet?.id;
+
+            if (!questionSetId) {
+              alert("질문 아이디가 없습니다.");
+              setProgress(0);
+              return;
+            }
+
+            router.push(`/question/${questionSetId}`);
+          },
+          onError: (error) => {
+            if(error.message == ERROR[404]) {
+              alert("질문 세트를 찾을 수 없습니다.")
+            }
+            setProgress(0);
+          }
+        }
+      );
     }
   };
 
