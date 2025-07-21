@@ -95,7 +95,7 @@ const Pdf = () => {
           <span className={styles.pdf.highlight}>AI 기반 질문 생성</span>
         </div>
         <Image width={105} height={65} src={"/assets/upload.png"} alt="업로드 이미지" />
-        <h1 className={styles.pdf.title}>포트폴리오 PDF를 올려주세요!</h1>
+        <p className={styles.pdf.title}>포트폴리오 PDF를 올려주세요!</p>
         <p>이곳에 파일을 드래그해서 놓거나 클릭하여서 선택해주세요.</p>
         <input
           type="file"

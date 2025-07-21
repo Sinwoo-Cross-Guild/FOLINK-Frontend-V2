@@ -46,9 +46,9 @@ export const loading = {
     width: "85px",
     aspectRatio: "1",
     background: `
-      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.skyBlue} calc(100% - 3px) 98%, transparent 101%) no-repeat,
-      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.softPink} calc(100% - 3px) 98%, transparent 101%) no-repeat,
-      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.coralPink} calc(100% - 3px) 98%, transparent 101%) no-repeat
+      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.purple} calc(100% - 3px) 98%, transparent 101%) no-repeat,
+      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.purple} calc(100% - 3px) 98%, transparent 101%) no-repeat,
+      radial-gradient(farthest-side, transparent calc(95% - 3px), ${theme.purple} calc(100% - 3px) 98%, transparent 101%) no-repeat
     `,
     backgroundSize: "40px 40px",
     animation: `${spinnerPulse} 1.8s infinite`,
