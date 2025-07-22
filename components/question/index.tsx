@@ -97,70 +97,82 @@ const Question = () => {
     const questionCount = getQuestionCount(questions);
     
     return (
-      <div className={styles.list.body}>
-        <div className={styles.list.header}>
-          <p>{title} </p>
-          <div className={styles.list.headerCount}>총 {questionCount}개</div>
-        </div>
+      <section className={styles.list.body}>
+        <header className={styles.list.header}>
+          {title}
+          <span className={styles.list.headerCount}>총 {questionCount}개</span>
+        </header>
         <div className={styles.list.container}>
           <div className={styles.list.wrap}>
             {Object.keys(questions).length === 0 ? (
-              <div className={styles.list.emptyState}>아직 {title} 질문이 없습니다.</div>
+              <p className={styles.list.emptyState}>아직 {title} 질문이 없습니다.</p>
             ) : (
               Object.entries(questions).map(([groupTitle, groupQuestions]) => (
-                <div className={styles.list.box} key={groupTitle}>
+                <article className={styles.list.box} key={groupTitle}>
                   {groupQuestions.map((question) => (
-                    <div key={question.id} className={styles.list.questionText}>
+                    <p key={question.id} className={styles.list.questionText}>
                       {question.question}
-                    </div>
+                    </p>
                   ))}
-                </div>
+                </article>
               ))
             )}
           </div>
         </div>
-      </div>
+      </section>
     );
   };
 
   const renderSkeletonSection = (title: string) => (
-    <div className={styles.list.body}>
-      <div className={styles.list.header}>
-        <p>{title}</p>
-        <div className={styles.list.headerCount}>총 0개</div>
-      </div>
+    <section className={styles.list.body}>
+      <header className={styles.list.header}>
+        {title}
+        <span className={styles.list.headerCount}>총 0개</span>
+      </header>
       <div className={styles.list.container}>
         <div className={styles.list.wrap}>
           <Skeleton />
         </div>
       </div>
-    </div>
+    </section>
   );
 
   return (
-    <div className={styles.question.container}>
-      <IoIosArrowBack onClick={() => router.back()} className={styles.header.back} />
-      <h1 className={styles.header.title}>
-        <span className={styles.header.highlight}>면접을</span> 시작해볼까요?
-      </h1>
+    <main className={styles.question.container}>
+      <nav>
+        <IoIosArrowBack 
+          onClick={() => router.back()} 
+          className={styles.header.back} 
+          aria-label="Go back"
+        />
+      </nav>
+      <header className={styles.header.title}>
+          <span className={styles.header.highlight}>면접을</span> 시작해볼까요?
+      </header>
       {isLoadingState ? (
         <>
           <Loading type="list" status={loadingStatus} />
-          <div className={styles.question.box}>
+          <section className={styles.question.box}>
             {renderSkeletonSection("프로젝트 질문")}
             {renderSkeletonSection("기술 스택 질문")}
-          </div>
+          </section>
         </>
       ) : (
-        <div className={styles.question.box}>
+        <section className={styles.question.box}>
           {renderQuestionSection("프로젝트 질문", groupedQuestions.projectQuestions)}
           {renderQuestionSection("기술 스택 질문", groupedQuestions.techStackQuestions)}
-        </div>
+        </section>
       )}
-      <button onClick={handleStartInterview} className={styles.list.InterviewBtn}>
-        답변 하기
-      </button>
-    </div>
+      <footer>
+        <button 
+          onClick={handleStartInterview} 
+          className={styles.list.InterviewBtn}
+          aria-label="Start interview"
+        >
+          답변 하기
+        </button>
+      </footer>
+    </main>
   );
 };
 

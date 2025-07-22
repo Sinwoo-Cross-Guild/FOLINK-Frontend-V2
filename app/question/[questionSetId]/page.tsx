@@ -7,8 +7,6 @@ export const metadata = generateOpenGraph({
 })
 
 const Page = () => {
-  return (
-    <Question />
-  )
+  return <Question />;
 }
 export default Page;

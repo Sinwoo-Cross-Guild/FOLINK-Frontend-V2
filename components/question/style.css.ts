@@ -1,4 +1,4 @@
-import { theme, font, flex, screen } from "@/styles";
+import { theme, font, flex } from "@/styles";
 import { keyframes, style } from "@vanilla-extract/css";
 
 const pulse = keyframes({
@@ -192,7 +192,6 @@ export const list = {
     color: `${theme.white}`,
     ...font.btnBold,
     border: "none",
-    cursor: "pointer",
     transition: "background 0.2s ease, transform 0.2s ease",
     selectors: {
       "&:hover": {

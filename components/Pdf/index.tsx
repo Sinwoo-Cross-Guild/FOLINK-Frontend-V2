@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { usePdfUploadMutation } from "@/services/pdf/pdf.mutation";
 import useDragAndDrop from "./useDragAndDrop";
@@ -12,7 +12,7 @@ import { ERROR } from "@/constants";
 const Pdf = () => {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
-  
+
   const { mutateAsync: upload, isPending: isUploading } = usePdfUploadMutation();
 
   const handleFilesSelected = async (files: File[]) => {
@@ -34,7 +34,7 @@ const Pdf = () => {
       }
 
       setProgress(0);
-      
+
       await upload(
         {
           file,
@@ -46,7 +46,7 @@ const Pdf = () => {
         {
           onSuccess: (response) => {
             setProgress(100);
-            
+
             const questionSetId = response?.data?.questionSet?.id;
 
             if (!questionSetId) {
@@ -58,11 +58,11 @@ const Pdf = () => {
             router.push(`/question/${questionSetId}`);
           },
           onError: (error) => {
-            if(error.message == ERROR[404]) {
-              alert("질문 세트를 찾을 수 없습니다.")
+            if (error.message === ERROR[404]) {
+              alert("질문 세트를 찾을 수 없습니다.");
             }
             setProgress(0);
-          }
+          },
         }
       );
     }
@@ -82,33 +82,44 @@ const Pdf = () => {
   });
 
   return (
-    <section
-      className={`${styles.pdf.container} ${isDragging ? styles.pdf.dragging : ""}`}
-      onDragEnter={handleDragEnter}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
+    <main className={`${styles.pdf.container} ${isDragging ? styles.pdf.dragging : ""}`}>
       {isUploading && <Loading type="extract" status="pending" progress={progress} />}
-      <section className={styles.pdf.body}>
-        <div className={styles.pdf.introduce}>
-          <span className={styles.pdf.highlight}>AI 기반 질문 생성</span>
-        </div>
-        <Image width={105} height={65} src={"/assets/upload.png"} alt="업로드 이미지" />
-        <p className={styles.pdf.title}>포트폴리오 PDF를 올려주세요!</p>
-        <p>이곳에 파일을 드래그해서 놓거나 클릭하여서 선택해주세요.</p>
+      <article
+        className={styles.pdf.body}
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <header className={styles.header.introduce}>
+          <h1>
+            <span className={styles.header.highlight}>AI 기반 질문 생성</span>
+          </h1>
+        </header>
+        <figure className={styles.figure.wrap}>
+          <Image width={105} height={65} src="/assets/upload.png" alt="PDF 업로드 아이콘" />
+          <figcaption className={styles.figure.title}>포트폴리오 PDF를 올려주세요!</figcaption>
+        </figure>
+        <p>이곳에 파일을 드래그해서 놓거나 클릭하여 선택해주세요.</p>
         <input
           type="file"
           ref={fileInputRef}
           style={{ display: "none" }}
           accept="application/pdf"
           onChange={handleFileChange}
+          id="pdf-upload"
+          aria-label="PDF 파일 업로드"
         />
-        <button className={styles.pdf.btn} onClick={triggerFileInput} disabled={isUploading}>
+        <button
+          className={styles.pdf.btn}
+          onClick={triggerFileInput}
+          disabled={isUploading}
+          aria-label="PDF 파일 선택"
+        >
           파일 선택
         </button>
-      </section>
-    </section>
+      </article>
+    </main>
   );
 };
 
