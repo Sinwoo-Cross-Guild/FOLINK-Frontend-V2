@@ -1,4 +1,4 @@
-import { theme, font, flex } from "@/styles";
+import { theme, font, flex, screen } from "@/styles";
 import { keyframes, style } from "@vanilla-extract/css";
 
 const pulse = keyframes({
@@ -72,7 +72,7 @@ export const list = {
     color: `${theme.white}`,
     overflow: "hidden",
     ...flex.BETWEEN,
-    ...font.H5
+    ...font.H5,
   }),
   headerCount: style({
     background: `rgba(255, 255, 255, 0.15)`, 
@@ -135,6 +135,7 @@ export const list = {
     transition: "all 0.2s ease",
     position: "relative",
     ...flex.COLUMN_FLEX,
+
     selectors: {
       "&:hover": {
         boxShadow: `0 8px 20px ${theme.shadow}`,

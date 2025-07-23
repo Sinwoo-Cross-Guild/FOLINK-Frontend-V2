@@ -1,4 +1,4 @@
-import Question from "@/components/question";
+import Question from "@/components/Question";
 import { generateOpenGraph } from "@/utils";
 
 export const metadata = generateOpenGraph({

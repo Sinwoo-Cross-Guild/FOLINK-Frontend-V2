@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import { questionQuery } from "@/services/question/question.query";
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { Loading } from "../Loading";
-import * as styles from "./style.css"
+import * as styles from "./style.css";
 import Skeleton from "./Skeleton";
 
 interface CommonQuestionType {
   id: number;
-  title: string; 
+  title: string;
   question: string;
   purpose: string;
   conversationId: number;
-  projectName?: string; 
-  stackName?: string; 
-};
+  projectName?: string;
+  stackName?: string;
+}
 
 interface GroupedQuestions {
   projectQuestions: { [key: string]: CommonQuestionType[] };
@@ -28,10 +28,10 @@ const Question = () => {
   const params = useParams();
   const router = useRouter();
   const questionSetId = Number(params.questionSetId);
-  
+
   const { data: response, isLoading, error } = useQuery(questionQuery.detail(questionSetId));
   const [isLoadingState, setIsLoadingState] = useState(true);
-  const [loadingStatus, setLoadingStatus] = useState<'pending' | 'success'>('pending');
+  const [loadingStatus, setLoadingStatus] = useState<"pending" | "success">("pending");
 
   const groupedQuestions: GroupedQuestions | undefined = response
     ? (() => {
@@ -52,8 +52,8 @@ const Question = () => {
           }, {});
 
         return {
-          projectQuestions: groupBy(projectQuestions, 'projectName'),
-          techStackQuestions: groupBy(techStackQuestions, 'stackName'),
+          projectQuestions: groupBy(projectQuestions, "projectName"),
+          techStackQuestions: groupBy(techStackQuestions, "stackName"),
         };
       })()
     : undefined;
@@ -61,17 +61,17 @@ const Question = () => {
   useEffect(() => {
     if (isLoading) {
       setIsLoadingState(true);
-      setLoadingStatus('pending');
+      setLoadingStatus("pending");
     } else if (error) {
       setIsLoadingState(false);
-      console.error('질문 세트를 불러오는데 실패했습니다.');
+      console.error("질문 세트를 불러오는데 실패했습니다.");
       setTimeout(() => router.back(), 1500);
     } else if (!groupedQuestions) {
       setIsLoadingState(false);
-      console.error('질문 데이터가 없습니다.');
+      console.error("질문 데이터가 없습니다.");
       setTimeout(() => router.back(), 1500);
     } else {
-      setLoadingStatus('success');
+      setLoadingStatus("success");
       setTimeout(() => {
         setIsLoadingState(false);
       }, 1000);
@@ -82,8 +82,23 @@ const Question = () => {
     return null;
   }
 
+  const getConversationId = (): string => {
+    const allQuestions = [
+      ...Object.values(groupedQuestions.projectQuestions).flat(),
+      ...Object.values(groupedQuestions.techStackQuestions).flat(),
+    ];
+
+    if (allQuestions.length > 0) {
+      return allQuestions[0].conversationId.toString();
+    }
+
+    console.error("conversationId를 찾을 수 없습니다.");
+    return "default";
+  };
+
   const handleStartInterview = () => {
-    router.push('/chat');
+    const conversationId = getConversationId();
+    router.push(`/interview/${questionSetId}/${conversationId}`); 
   };
 
   const getQuestionCount = (questions: { [key: string]: CommonQuestionType[] }): number => {
@@ -92,10 +107,10 @@ const Question = () => {
 
   const renderQuestionSection = (
     title: string,
-    questions: { [key: string]: CommonQuestionType[] },
+    questions: { [key: string]: CommonQuestionType[] }
   ) => {
     const questionCount = getQuestionCount(questions);
-    
+
     return (
       <section className={styles.list.body}>
         <header className={styles.list.header}>
@@ -140,14 +155,14 @@ const Question = () => {
   return (
     <main className={styles.question.container}>
       <nav>
-        <IoIosArrowBack 
-          onClick={() => router.back()} 
-          className={styles.header.back} 
+        <IoIosArrowBack
+          onClick={() => router.back()}
+          className={styles.header.back}
           aria-label="Go back"
         />
       </nav>
       <header className={styles.header.title}>
-          <span className={styles.header.highlight}>면접을</span> 시작해볼까요?
+        <span className={styles.header.highlight}>면접을</span> 시작해볼까요?
       </header>
       {isLoadingState ? (
         <>
@@ -164,8 +179,8 @@ const Question = () => {
         </section>
       )}
       <footer>
-        <button 
-          onClick={handleStartInterview} 
+        <button
+          onClick={handleStartInterview}
           className={styles.list.InterviewBtn}
           aria-label="Start interview"
         >
