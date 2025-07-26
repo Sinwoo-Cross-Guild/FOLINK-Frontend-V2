@@ -10,7 +10,7 @@ export const aside = {
     left: 0,
     background: `${theme.white}`,
     borderRight: "1px solid #f0f0f0",
-    boxShadow: `2px 0 12px ${theme.shadow}`,
+
     zIndex: 100,
     ...flex.COLUMN_FLEX,
     overflow: "hidden",
